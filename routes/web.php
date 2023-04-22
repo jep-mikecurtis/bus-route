@@ -56,7 +56,7 @@ Route::get('/{view}', function(Request $request, $view) {
     return Inertia::render($view, $request->all(), [
         'request' => $request->all()
     ]);
-});
+})->middleware('auth:sanctum');
 
 // Handler For Views With Folder
 Route::get('/{folder}/{view}', function(Request $request, $folder, $view) {
@@ -66,4 +66,4 @@ Route::get('/{folder}/{view}', function(Request $request, $folder, $view) {
     return Inertia::render($folder . '/' . $view, [
         'request' => $request->all()
     ]);
-});
+})->middleware('auth:sanctum');
