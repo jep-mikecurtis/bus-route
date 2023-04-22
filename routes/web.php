@@ -19,12 +19,19 @@ use App\Http\Middleware\DataMiddleware;
 */
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    if(auth()->user()) {
+        return redirect()->route('dashboard');
+    }
+
+    // Redirect to register
+    return redirect()->route('login');
+
+    // return Inertia::render('Register', [
+    //     'canLogin' => Route::has('login'),
+    //     'canRegister' => Route::has('register'),
+    //     'laravelVersion' => Application::VERSION,
+    //     'phpVersion' => PHP_VERSION,
+    // ]);
 });
 
 Route::middleware([
