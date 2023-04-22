@@ -77,6 +77,9 @@ class DataController extends Controller
     public function deleteStop(Request $request)
     {
         $stop = Stop::find($request->stop['id']);
+
+        $stop->contacts()->delete();
+
         $stop->delete();
 
         $route = Route::find($request->stop['nc_x1h0___Route_id']);
