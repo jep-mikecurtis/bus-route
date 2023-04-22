@@ -28,7 +28,14 @@ const submit = () => {
 
     <AuthenticationCard>
         <template #logo>
-            <AuthenticationCardLogo />
+            <div class="flex flex-col items-center tracking-widest bg-gray-800 py-10 px-5 rounded-full text-white font-bold">
+                <h1 class="text-xl">
+                    FWBT
+                </h1>
+                <h2 class="text-lg ">
+                    Bus Route
+                </h2>
+            </div>
         </template>
 
         <form @submit.prevent="submit">
@@ -103,7 +110,7 @@ const submit = () => {
                     Already registered?
                 </Link>
 
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <PrimaryButton class="mt-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Register
                 </PrimaryButton>
             </div>
