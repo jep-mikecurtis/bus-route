@@ -21,11 +21,6 @@ onMounted(() => {
                 >
                 <Link
                     class="flex-1 bg-blue-600 text-white font-bold text-center py-2 text-sm"
-                    href="/dashboard/stop/create"
-                    >Add Stop</Link
-                >
-                <Link
-                    class="flex-1 bg-blue-600 text-white font-bold text-center py-2 text-sm"
                     href="/dashboard/stop"
                     >Create Prospect</Link
                 >

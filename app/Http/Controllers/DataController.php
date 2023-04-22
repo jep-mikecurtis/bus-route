@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Route;
 use App\Models\Stop;
+use App\Models\Contact;
 
 class DataController extends Controller
 {
@@ -58,12 +59,52 @@ class DataController extends Controller
 
         $stop->order = $stopData['order'];
         $stop->street = $stopData['street'];
-        $stop->street_2 = $stopData['street_2'];
+        $stop->street_2 = $stopData['street_2'] ?? '';
         $stop->city = $stopData['city'];
         $stop->state = $stopData['state'];
-        $stop->zip = $stopData['zip'];
+        $stop->zip = $stopData['zip'] ?? '';
         $stop->nc_x1h0___Route_id = $route['id'];
         $stop->save();
+
+        $route = Route::find($route['id']);
+        $stops = $route->stops;
+
+        return [
+            'stops' => $stops
+        ];
+    }
+
+    public function deleteStop(Request $request)
+    {
+        $stop = Stop::find($request->stop['id']);
+        $stop->delete();
+
+        $route = Route::find($request->stop['nc_x1h0___Route_id']);
+        $stops = $route->stops;
+
+        return [
+            'stops' => $stops
+        ];
+    }
+
+    public function storeContact(Request $request)
+    {
+        $stop = $request->stop;
+        $contactData = $request->contact;
+        $route = $request->route;
+
+        if(isset($contactData['id'])) {
+            $contact = Contact::find($contactData['id']);
+        } else {
+            $contact = new Contact;
+        }
+
+        $contact->first_name = $contactData['first_name'];
+        $contact->last_name = $contactData['last_name'];
+        $contact->phone = $contactData['phone'] ?? '';
+        $contact->email = $contactData['email'] ?? '';
+        $contact->nc_x1h0___Stop_id = $stop['id'];
+        $contact->save();
 
         $route = Route::find($route['id']);
         $stops = $route->stops;
