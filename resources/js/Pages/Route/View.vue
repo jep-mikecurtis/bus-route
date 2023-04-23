@@ -110,10 +110,26 @@ onMounted(() => {
                                 <b> Address: </b>
                             </p>
                             <p>
-                                {{ stop.street }}
-                                {{
-                                    stop.street_2 ? `Apt: ${stop.street_2}` : ""
-                                }}
+                                <a
+                                    :href="
+                                        'http://maps.google.com/?q=' +
+                                        stop.street +
+                                        ' ' +
+                                        stop.city +
+                                        ' ' +
+                                        stop.state +
+                                        ' ' +
+                                        stop.zip
+                                    "
+                                    target="_blank"
+                                >
+                                    {{ stop.street }}
+                                    {{
+                                        stop.street_2
+                                            ? `Apt: ${stop.street_2}`
+                                            : ""
+                                    }}
+                                </a>
                             </p>
                             <p>
                                 {{ stop.city }}, {{ stop.state }} {{ stop.zip }}
@@ -152,7 +168,10 @@ onMounted(() => {
                                         {{ contact.last_name }}
                                     </button>
                                     <p>
-                                        <a :href="'tel:'+contact.phone" class="text-purple-800 block mt-2">
+                                        <a
+                                            :href="'tel:' + contact.phone"
+                                            class="text-purple-800 block mt-2"
+                                        >
                                             {{ contact.phone }}
                                         </a>
                                     </p>
@@ -173,8 +192,14 @@ onMounted(() => {
         <Modal :show="store.stopEdit">
             <div class="flex items-center justify-between p-4">
                 <h2 class="text-xl">Add Stop</h2>
-                <button class="text-red-600" @click="store.submit('DataController', 'deleteStop', ['stop']); store.stopEdit = false">
-                   Delete Stop
+                <button
+                    class="text-red-600"
+                    @click="
+                        store.submit('DataController', 'deleteStop', ['stop']);
+                        store.stopEdit = false;
+                    "
+                >
+                    Delete Stop
                 </button>
             </div>
 
