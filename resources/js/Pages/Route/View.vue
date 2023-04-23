@@ -152,7 +152,9 @@ onMounted(() => {
                                         {{ contact.last_name }}
                                     </button>
                                     <p>
-                                        {{ contact.phone }}
+                                        <a :href="'tel:'+contact.phone" class="text-purple-800 block mt-2">
+                                            {{ contact.phone }}
+                                        </a>
                                     </p>
                                     <p>
                                         {{ contact.email }}
