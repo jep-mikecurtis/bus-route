@@ -6,7 +6,7 @@ onMounted(() => {
     store.dispatch("DataController", "getRoute");
 });
 
-const formatPickupDate = date => {
+const formatPickupDate = (date) => {
     // Validate date
     if (!date) return "";
 
@@ -167,7 +167,7 @@ const formatPickupDate = date => {
                                 v-for="contact in stop.contacts"
                                 v-if="store[`show-stop-${stop.id}`]"
                             >
-                                <div class="my-2">
+                                <div class="my-2 flex items-center space-x-2 flex-wrap">
                                     <button
                                         class="text-blue-600"
                                         @click="
@@ -179,14 +179,13 @@ const formatPickupDate = date => {
                                         {{ contact.first_name }}
                                         {{ contact.last_name }}
                                     </button>
-                                    <p>
-                                        <a
-                                            :href="'tel:' + contact.phone"
-                                            class="text-purple-800 block mt-2"
-                                        >
-                                            {{ contact.phone }}
-                                        </a>
-                                    </p>
+                                    <a
+                                        :href="'tel:' + contact.phone"
+                                        class="text-purple-800 block"
+                                    >
+                                        {{ contact.phone }}
+                                    </a>
+
                                     <p>
                                         {{ contact.email }}
                                     </p>
@@ -199,7 +198,13 @@ const formatPickupDate = date => {
                             <p class="flex space-x-4">
                                 <b>Pickup:</b>
                                 <span>
-                                    {{ stop.pickups.length ? formatPickupDate(stop.pickups[0].date) : 'None' }}
+                                    {{
+                                        stop.pickups.length
+                                            ? formatPickupDate(
+                                                  stop.pickups[0].date
+                                              )
+                                            : "None"
+                                    }}
                                 </span>
                             </p>
                         </div>
