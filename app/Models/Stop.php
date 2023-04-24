@@ -27,6 +27,7 @@ class Stop extends Model
     // Many To Many Pickups
     public function pickups()
     {
-        return $this->belongsToMany(Pickup::class, 'nc_x1h0___nc_m2m_nyhygcgdu2', 'table2_id', 'table1_id');
+
+        return $this->belongsToMany(Pickup::class, 'nc_x1h0___nc_m2m_nyhygcgdu2', 'table2_id', 'table1_id')->orderBy('date', 'desc');
     }
 }

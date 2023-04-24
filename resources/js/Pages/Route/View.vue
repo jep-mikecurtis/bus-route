@@ -10,12 +10,12 @@ const formatPickupDate = (date) => {
     // Validate date
     if (!date) return "";
 
-    const dateObj = new Date(date);
-    const month = dateObj.toLocaleString("default", { month: "long" });
-    const day = dateObj.getDate();
-    const year = dateObj.getFullYear();
+    // Format 2023-04-30 to 04/30/2023 Date is off by one day
+    date = new Date(date);
+    date.setDate(date.getDate() + 1);
+    date = date.toLocaleDateString("en-US");
 
-    return `${month} ${day}, ${year}`;
+    return date;
 };
 </script>
 
@@ -113,6 +113,17 @@ const formatPickupDate = (date) => {
                                 >
                                     Add Contact
                                 </button>
+
+                                <button
+                                    class="bg-blue-600 text-white rounded shadow text-xs font-bold p-1"
+                                    @click="
+                                        store.pickupEdit = !store.pickupEdit;
+                                        store.pickup = {};
+                                        store.stop = stop;
+                                    "
+                                >
+                                    Add Pickup
+                                </button>
                             </div>
                         </div>
 
@@ -167,7 +178,9 @@ const formatPickupDate = (date) => {
                                 v-for="contact in stop.contacts"
                                 v-if="store[`show-stop-${stop.id}`]"
                             >
-                                <div class="my-2 flex items-center space-x-2 flex-wrap">
+                                <div
+                                    class="my-2 flex items-center space-x-2 flex-wrap"
+                                >
                                     <button
                                         class="text-blue-600"
                                         @click="
@@ -376,6 +389,48 @@ const formatPickupDate = (date) => {
                             store.contactEdit = false;
                             store.stop = {};
                             store.contact = {};
+                        "
+                    >
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-blue-600 min-w-[100px]">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </Modal>
+
+        <Modal :show="store.pickupEdit">
+            <h2 class="text-xl p-4">Add Pickup</h2>
+            <form
+                @submit.prevent="
+                    store.submit('DataController', 'storePickup', [
+                        'pickup',
+                        'stop',
+                        'route'
+                    ]);
+                    store.pickupEdit = false;
+                "
+                class="p-4"
+            >
+                <div>
+                    <label for="first_name">Date</label>
+                    <input
+                        v-model="store.pickup.date"
+                        type="date"
+                        name="first_name"
+                        id="first_name"
+                    />
+                </div>
+
+                <div class="flex flex-row justify-end">
+                    <button
+                        type="button"
+                        class="bg-red-600 min-w-[100px]"
+                        @click="
+                            store.pickupEdit = false;
+                            store.stop = {};
+                            store.pickup = {};
                         "
                     >
                         Cancel

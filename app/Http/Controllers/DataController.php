@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Route;
 use App\Models\Stop;
 use App\Models\Contact;
+use App\Models\Pickup;
 
 class DataController extends Controller
 {
@@ -108,6 +109,36 @@ class DataController extends Controller
         $contact->email = $contactData['email'] ?? '';
         $contact->nc_x1h0___Stop_id = $stop['id'];
         $contact->save();
+
+        $route = Route::find($route['id']);
+        $stops = $route->stops;
+
+        return [
+            'stops' => $stops
+        ];
+    }
+
+    public function storePickup(Request $request)
+    {
+        $pickupData = $request->pickup;
+        $stopData = $request->stop;
+        $route = $request->route;
+
+        // Check If Date Exists
+        $pickup = Pickup::where('date', $pickupData['date'])->first();
+
+        if(!$pickup) {
+            $pickup = new Pickup;
+            $pickup->date = $pickupData['date'];
+            $pickup->save();
+        }
+
+        // Check If Stop Is Already Attached To Pickup
+        $stop = $pickup->stops()->where('table2_id', $stopData['id'])->first();
+
+        if(!$stop) {
+            $pickup->stops()->attach($stopData['id']);
+        }
 
         $route = Route::find($route['id']);
         $stops = $route->stops;
