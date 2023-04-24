@@ -5,6 +5,18 @@ import Modal from "@/Components/Modal.vue";
 onMounted(() => {
     store.dispatch("DataController", "getRoute");
 });
+
+const formatPickupDate = date => {
+    // Validate date
+    if (!date) return "";
+
+    const dateObj = new Date(date);
+    const month = dateObj.toLocaleString("default", { month: "long" });
+    const day = dateObj.getDate();
+    const year = dateObj.getFullYear();
+
+    return `${month} ${day}, ${year}`;
+};
 </script>
 
 <template>
@@ -139,6 +151,7 @@ onMounted(() => {
                         <!-- Contacts -->
                         <div>
                             <p class="flex space-x-4">
+                                <b> Contacts: {{ stop.contacts.length }} </b>
                                 <button
                                     class="text-blue-600"
                                     @click="
@@ -148,7 +161,6 @@ onMounted(() => {
                                 >
                                     Show
                                 </button>
-                                <b> Contacts: {{ stop.contacts.length }} </b>
                             </p>
 
                             <div
@@ -180,6 +192,16 @@ onMounted(() => {
                                     </p>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Pickups -->
+                        <div>
+                            <p class="flex space-x-4">
+                                <b>Pickup:</b>
+                                <span>
+                                    {{ stop.pickups.length ? formatPickupDate(stop.pickups[0].date) : 'None' }}
+                                </span>
+                            </p>
                         </div>
                     </div>
                 </div>
