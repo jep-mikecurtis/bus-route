@@ -1,9 +1,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 onMounted(() => {
-    setTimeout(() => {
-        store.dispatch("DataController", "getRoutes");
-    }, 1000);
+    store.dispatch("DataController", "getRoutes");
 });
 </script>
 
