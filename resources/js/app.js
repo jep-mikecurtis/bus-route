@@ -28,9 +28,8 @@ createInertiaApp({
                         store: useStore(),
                     };
                 },
-                async mounted() {
+                mounted() {
                     window.store = this.store;
-                    // Set Request
                     window.request = props.initialPage.props.request;
                 },
             })
