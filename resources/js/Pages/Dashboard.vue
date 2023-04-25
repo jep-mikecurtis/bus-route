@@ -33,12 +33,11 @@ onMounted(() => {
                     <h1 class="text-2xl mb-4">Routes</h1>
                     <div v-for="route in store.routes" class="mb-4">
                         <div class="flex space-x-2">
-                            <span class="font-bold">Name:</span>
-                            <span>{{ route.name }}</span>
+                            <Link class="flex space-x-2" :href="'/route/view?id=' + route.id">
+                                <span class="font-bold">Name:</span>
+                                <span class="text-blue-600">{{ route.name }}</span>
+                            </Link>
                         </div>
-                        <Link :href="'/route/view?id=' + route.id">
-                            View
-                        </Link>
                     </div>
                 </div>
             </div>

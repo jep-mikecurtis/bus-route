@@ -18,6 +18,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
-        "pinia": "^2.0.34"
+        "pinia": "^2.0.34",
+        "vue-google-autocomplete": "^1.1.4"
     }
 }

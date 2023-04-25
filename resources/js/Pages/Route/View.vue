@@ -1,6 +1,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Modal from "@/Components/Modal.vue";
+import VueGoogleAutocomplete from "vue-google-autocomplete";
 
 onMounted(() => {
     store.dispatch("DataController", "getRoute");
@@ -17,6 +18,13 @@ const formatPickupDate = (date) => {
 
     return date;
 };
+
+const getAddressData = data => {
+    store.stop.street = `${data.street_number} ${data.route}`;
+    store.stop.city = data.locality;
+    store.stop.state = data.administrative_area_level_1;
+    store.stop.zip = data.postal_code;
+}
 </script>
 
 <template>
@@ -261,6 +269,11 @@ const formatPickupDate = (date) => {
                         id="order"
                         v-model="store.stop.order"
                     />
+                </div>
+
+                <div>
+                    <label for="map">Search Address</label>
+                    <vue-google-autocomplete id="map" classname="form-control" placeholder="Start typing" v-on:placechanged="getAddressData"></vue-google-autocomplete>
                 </div>
 
                 <div>

@@ -14,6 +14,9 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+        {{-- Google --}}
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC76oa_Dy6EC2TF3cJ6PDpeQ0LgLw00W_k&libraries=places"></script>
+
         {{-- CSRF --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
