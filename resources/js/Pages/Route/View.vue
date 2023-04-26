@@ -19,12 +19,12 @@ const formatPickupDate = (date) => {
     return date;
 };
 
-const getAddressData = data => {
+const getAddressData = (data) => {
     store.stop.street = `${data.street_number} ${data.route}`;
     store.stop.city = data.locality;
     store.stop.state = data.administrative_area_level_1;
     store.stop.zip = data.postal_code;
-}
+};
 </script>
 
 <template>
@@ -92,47 +92,52 @@ const getAddressData = data => {
                     </div>
 
                     <div
-                        v-for="stop in store.stops"
+                        v-for="(stop,) in store.stops"
                         class="mb-6 border p-4 rounded shadow-sm flex flex-col space-y-4 max-w-xl"
                     >
-                        <!-- Stop -->
-                        <div class="flex justify-between">
+                        <!-- Stop And Name -->
+                        <div class="flex flex-col items-center space-y-2">
                             <p>
                                 <b> Stop: </b>
                                 {{ stop.order }}
                             </p>
-                            <div class="flex space-x-2">
-                                <button
-                                    class="bg-blue-600 text-white rounded shadow text-xs font-bold p-1"
-                                    @click="
-                                        store.stop = stop;
-                                        store.stopEdit = true;
-                                    "
-                                >
-                                    Edit Stop
-                                </button>
-                                <button
-                                    class="bg-blue-600 text-white rounded shadow text-xs font-bold p-1"
-                                    @click="
-                                        store.stop = stop;
-                                        store.contact = {};
-                                        store.contactEdit = true;
-                                    "
-                                >
-                                    Add Contact
-                                </button>
+                            <p v-if="stop.name">
+                                <b>Name:</b>
+                                {{ stop.name }}
+                            </p>
+                        </div>
+                        <!-- Stop -->
+                        <div class="flex justify-between space-x-2">
+                            <button
+                                class="flex-1 bg-blue-600 text-white rounded shadow text-xs font-bold p-1"
+                                @click="
+                                    store.stop = stop;
+                                    store.stopEdit = true;
+                                "
+                            >
+                                Edit Stop
+                            </button>
+                            <button
+                                class="flex-1 bg-blue-600 text-white rounded shadow text-xs font-bold p-1"
+                                @click="
+                                    store.stop = stop;
+                                    store.contact = {};
+                                    store.contactEdit = true;
+                                "
+                            >
+                                Add Contact
+                            </button>
 
-                                <button
-                                    class="bg-blue-600 text-white rounded shadow text-xs font-bold p-1"
-                                    @click="
-                                        store.pickupEdit = !store.pickupEdit;
-                                        store.pickup = {};
-                                        store.stop = stop;
-                                    "
-                                >
-                                    Add Pickup
-                                </button>
-                            </div>
+                            <button
+                                class="flex-1 bg-blue-600 text-white rounded shadow text-xs font-bold p-1"
+                                @click="
+                                    store.pickupEdit = !store.pickupEdit;
+                                    store.pickup = {};
+                                    store.stop = stop;
+                                "
+                            >
+                                Add Pickup
+                            </button>
                         </div>
 
                         <!-- Address -->
@@ -261,7 +266,18 @@ const getAddressData = data => {
                 "
                 class="p-4"
             >
-                <div>
+            <div class="flex flex-row space-x-4">
+                <div class="w-8/12">
+                    <label for="name">Name</label>
+                    <input
+                        type="text"
+                        name="name"
+                        id="name"
+                        v-model="store.stop.name"
+                    />
+                </div>
+
+                <div class="w-4/12">
                     <label for="order">Order</label>
                     <input
                         type="text"
@@ -270,10 +286,16 @@ const getAddressData = data => {
                         v-model="store.stop.order"
                     />
                 </div>
+            </div>
 
                 <div>
                     <label for="map">Search Address</label>
-                    <vue-google-autocomplete id="map" classname="form-control" placeholder="Start typing" v-on:placechanged="getAddressData"></vue-google-autocomplete>
+                    <vue-google-autocomplete
+                        id="map"
+                        classname="form-control"
+                        placeholder="Start typing"
+                        v-on:placechanged="getAddressData"
+                    ></vue-google-autocomplete>
                 </div>
 
                 <div>
@@ -296,24 +318,27 @@ const getAddressData = data => {
                     />
                 </div>
 
-                <div>
-                    <label for="city">City</label>
-                    <input
-                        type="text"
-                        name="city"
-                        id="city"
-                        v-model="store.stop.city"
-                    />
-                </div>
+                <div class="flex flex-row space-x-4">
 
-                <div>
-                    <label for="state">State</label>
-                    <input
-                        type="text"
-                        name="state"
-                        id="state"
-                        v-model="store.stop.state"
-                    />
+                    <div class="w-8/12">
+                        <label for="city">City</label>
+                        <input
+                            type="text"
+                            name="city"
+                            id="city"
+                            v-model="store.stop.city"
+                        />
+                    </div>
+
+                    <div class="w-4/12">
+                        <label for="state">State</label>
+                        <input
+                            type="text"
+                            name="state"
+                            id="state"
+                            v-model="store.stop.state"
+                        />
+                    </div>
                 </div>
 
                 <div>
@@ -420,7 +445,7 @@ const getAddressData = data => {
                     store.submit('DataController', 'storePickup', [
                         'pickup',
                         'stop',
-                        'route'
+                        'route',
                     ]);
                     store.pickupEdit = false;
                 "

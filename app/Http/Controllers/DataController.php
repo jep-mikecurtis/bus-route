@@ -58,6 +58,7 @@ class DataController extends Controller
             $stop = new Stop;
         }
 
+        $stop->name = $stopData['name'] ?? '';
         $stop->order = $stopData['order'];
         $stop->street = $stopData['street'];
         $stop->street_2 = $stopData['street_2'] ?? '';
@@ -104,7 +105,7 @@ class DataController extends Controller
         }
 
         $contact->first_name = $contactData['first_name'];
-        $contact->last_name = $contactData['last_name'];
+        $contact->last_name = $contactData['last_name'] ?? '';
         $contact->phone = $contactData['phone'] ?? '';
         $contact->email = $contactData['email'] ?? '';
         $contact->nc_x1h0___Stop_id = $stop['id'];
