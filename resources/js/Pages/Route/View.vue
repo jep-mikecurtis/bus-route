@@ -44,6 +44,7 @@ const getAddressData = (data) => {
                         <h1>
                             <b> Route: </b>
                             {{ store.route.name }}
+                            <a class="ml-4 text-blue-600" :href="'/pdf/route/'+store.route.id">Download</a>
                         </h1>
                         <button @click="store.routeEdit = !store.routeEdit">
                             Edit
