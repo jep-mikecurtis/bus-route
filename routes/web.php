@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 // Use Data Middleware
 use App\Http\Middleware\DataMiddleware;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,24 @@ Route::get('/', function () {
     //     'laravelVersion' => Application::VERSION,
     //     'phpVersion' => PHP_VERSION,
     // ]);
+});
+
+Route::get('/pdf/route/{id}', function(Request $request, $id) {
+
+
+    $route = \App\Models\Route::find($id);
+    $stops = $route->stops;
+    $pdf = PDF::loadView('pdf.route', [
+        'route' => $route,
+        'stops' => $stops
+    ]);
+
+    // Return View
+    // return view('pdf.route', [
+    //     'route' => $route,
+    //     'stops' => $stops
+    // ]);
+    return $pdf->download('route.pdf');
 });
 
 Route::middleware([

@@ -92,7 +92,7 @@ const getAddressData = (data) => {
                     </div>
 
                     <div
-                        v-for="(stop,) in store.stops"
+                        v-for="stop in store.stops"
                         class="mb-6 border p-4 rounded shadow-sm flex flex-col space-y-4 max-w-xl"
                     >
                         <!-- Stop And Name -->
@@ -222,8 +222,15 @@ const getAddressData = (data) => {
                         <!-- Pickups -->
                         <div>
                             <p class="flex space-x-4">
-                                <b>Pickup:</b>
+                                <b>Pickups: {{ stop.pickups.length }}</b>
+                                <button
+                                    class="text-blue-600"
+                                    @click="store.viewPickup = stop"
+                                >
+                                    Show
+                                </button>
                                 <span>
+                                    <b>Latest:</b>
                                     {{
                                         stop.pickups.length
                                             ? formatPickupDate(
@@ -247,6 +254,16 @@ const getAddressData = (data) => {
                 <h2 class="text-xl">Add Stop</h2>
                 <button
                     class="text-red-600"
+                    @click="store.deleteStopConfirm = !store.deleteStopConfirm"
+                >
+                    Remove Stop
+                </button>
+            </div>
+
+            <div class="p-4 flex space-x-4" v-if="store.deleteStopConfirm">
+                <p>Are you sure you want to delete this stop?</p>
+                <button
+                    class="text-red-600"
                     @click="
                         store.submit('DataController', 'deleteStop', ['stop']);
                         store.stopEdit = false;
@@ -266,27 +283,27 @@ const getAddressData = (data) => {
                 "
                 class="p-4"
             >
-            <div class="flex flex-row space-x-4">
-                <div class="w-8/12">
-                    <label for="name">Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        v-model="store.stop.name"
-                    />
-                </div>
+                <div class="flex flex-row space-x-4">
+                    <div class="w-8/12">
+                        <label for="name">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            v-model="store.stop.name"
+                        />
+                    </div>
 
-                <div class="w-4/12">
-                    <label for="order">Order</label>
-                    <input
-                        type="text"
-                        name="order"
-                        id="order"
-                        v-model="store.stop.order"
-                    />
+                    <div class="w-4/12">
+                        <label for="order">Order</label>
+                        <input
+                            type="text"
+                            name="order"
+                            id="order"
+                            v-model="store.stop.order"
+                        />
+                    </div>
                 </div>
-            </div>
 
                 <div>
                     <label for="map">Search Address</label>
@@ -319,7 +336,6 @@ const getAddressData = (data) => {
                 </div>
 
                 <div class="flex flex-row space-x-4">
-
                     <div class="w-8/12">
                         <label for="city">City</label>
                         <input
@@ -438,6 +454,7 @@ const getAddressData = (data) => {
             </form>
         </Modal>
 
+        <!-- Pickup Modal -->
         <Modal :show="store.pickupEdit">
             <h2 class="text-xl p-4">Add Pickup</h2>
             <form
@@ -478,6 +495,87 @@ const getAddressData = (data) => {
                     </button>
                 </div>
             </form>
+        </Modal>
+
+        <!-- Stop Pickup Modal -->
+        <Modal :show="store.viewPickup" @close="store.viewPickup = false">
+            <div>
+                <h2 class="text-xl p-4">{{ store.viewPickup.name }} Pickups</h2>
+
+                <!-- X SVG -->
+                <svg
+                    @click="
+                        store.viewPickup = false;
+                        store.deletePickupId = false;
+                    "
+                    class="absolute top-0 right-0 m-4 cursor-pointer"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#000000"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </div>
+
+            <!-- ForEach Pickup -->
+            <div>
+                <div
+                    v-for="pickup in store.viewPickup.pickups"
+                    class="border-b"
+                >
+                    <div class="flex flex-row justify-between p-4">
+                        <p>
+                            <b>Date:</b>
+                            {{ formatPickupDate(pickup.date) }}
+                        </p>
+                        <p>
+                            <button @click="store.deletePickupId = pickup.id">
+                                Delete
+                            </button>
+                        </p>
+                    </div>
+
+                    <!-- Confirm Delete -->
+                    <div
+                        class="flex flex-col justify-end p-4 text-center space-y-4"
+                        v-if="store.deletePickupId === pickup.id"
+                    >
+                        <p>Are You Want To Delete This Pickup?</p>
+                        <div class="flex text-bold">
+                            <button
+                                class="flex-1 bg-gray-600 text-white"
+                                @click="store.deletePickupId = false"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                class="bg-blue-600 text-white flex-1"
+                                @click="
+                                    store.submit(
+                                        'DataController',
+                                        'deletePickup',
+                                        [
+                                            'deletePickupId',
+                                            'viewPickup',
+                                            'route',
+                                        ]
+                                    );
+                                    store.viewPickup = false;
+                                    store.deletePickupId = false;
+                                "
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </Modal>
     </AppLayout>
 </template>

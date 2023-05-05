@@ -148,4 +148,23 @@ class DataController extends Controller
             'stops' => $stops
         ];
     }
+
+    public function deletePickup(Request $request)
+    {
+        $pickup = Pickup::find($request->deletePickupId);
+
+        if(!$pickup) {
+            return [
+                'error' => 'Pickup Not Found'
+            ];
+        }
+
+        $pickup->stops()->detach($request->viewPickup['id']);
+        $route = Route::find($request->route['id']);
+        $stops = $route->stops;
+
+        return [
+            'stops' => $stops
+        ];
+    }
 }
