@@ -45,12 +45,9 @@ Route::get('/pdf/route/{id}', function(Request $request, $id) {
         'stops' => $stops
     ]);
 
-    // Return View
-    // return view('pdf.route', [
-    //     'route' => $route,
-    //     'stops' => $stops
-    // ]);
-    return $pdf->download('route.pdf');
+    // Open in browser
+    return $pdf->stream();
+
 });
 
 Route::middleware([
