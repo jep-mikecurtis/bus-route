@@ -36,43 +36,48 @@
         Route {{ $route->name }}
     </h1>
     {{-- Stops --}}
-    @foreach ($stops as $id => $stop)
-        <div class="stop flex flex-col space-y-2 p-4 border-2">
-            <div class="stop__number">
-                <b>Stop #{{ $id + 1 }}</b>
-            </div>
-            <div class="stop__name">
-                <b>Name: </b>
-                {{ $stop->name }}
-            </div>
-            <div class="stop__address">
-                <b>Address: </b>
-                {{ $stop->street }} {{ $stop->street_2 }}, {{ $stop->city }}, {{ $stop->state }} {{ $stop->zip }}
-            </div>
-
-            {{-- ForEach Contacts --}}
-            <p>
-                <b>Contacts: </b>
-            </p>
-            @foreach ($stop->contacts as $contact)
-                <div class="contact flex flex-col p-2">
-                    <div class="contact__name">
-                        <b>Name: </b>
-                        {{ $contact->first_name }}
-                        {{ $contact->last_name }}
-                    </div>
-                    <div class="contact__phone">
-                        <b>Phone: </b>
-                        {{ $contact->phone }}
-                    </div>
-                    <div class="contact__email">
-                        <b>Email: </b>
-                        {{ $contact->email }}
-                    </div>
+    <div class="flex flex-col space-y-2">
+        @foreach ($stops as $id => $stop)
+            <div class="stop flex flex-col space-y-2 p-4 border rounded mb-2 shadow-sm">
+                <div class="stop__number">
+                    <b>Stop #{{ $id + 1 }}</b>
                 </div>
-            @endforeach
-        </div>
-    @endforeach
+                <div class="stop__name">
+                    <b>Name: </b>
+                    {{ $stop->name }}
+                </div>
+                <div class="stop__address">
+                    <b>Address: </b>
+                    {{ $stop->street }} {{ $stop->street_2 }}, {{ $stop->city }}, {{ $stop->state }} {{ $stop->zip }}
+                </div>
+
+                {{-- ForEach Contacts --}}
+                <p>
+                    <b>Contacts: </b>
+                </p>
+                @foreach ($stop->contacts as $contact)
+                    <div class="contact flex flex-col p-2 text-sm">
+                        <div class="contact__name">
+                            <b>Name: </b>
+                            {{ $contact->first_name }}
+                            {{ $contact->last_name }}
+                        </div>
+                        <div class="contact__phone">
+                            <b>Phone: </b>
+                            {{-- Anchor --}}
+                            <a href="tel:{{ $contact->phone }}">
+                                {{ $contact->phone }}
+                            </a>
+                        </div>
+                        <div class="contact__email">
+                            <b>Email: </b>
+                            {{ $contact->email }}
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endforeach
+    </div>
 </body>
 
 </html>
