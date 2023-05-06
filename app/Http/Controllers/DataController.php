@@ -59,7 +59,7 @@ class DataController extends Controller
         }
 
         $stop->name = $stopData['name'] ?? '';
-        $stop->order = $stopData['order'];
+        $stop->order = $stopData['order'] ?? '';
         $stop->street = $stopData['street'];
         $stop->street_2 = $stopData['street_2'] ?? '';
         $stop->city = $stopData['city'];
